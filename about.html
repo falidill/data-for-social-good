@@ -39,9 +39,8 @@
         <p>Fali Honutse is a data science and operations professional with experience supporting nonprofit, education, healthcare, and mission-driven organizations through reporting systems, data quality improvement, dashboards, and operational analytics.</p>
         <p>Data for Mission grew out of that work — a way to formalize and extend volunteer data support to more nonprofit and community organizations, alongside workshops run in partnership with Women in Data Science.</p>
         <div class="btnrow">
-          <a class="btn outline" href="#" target="_blank" rel="noopener">View full portfolio →</a>
+          <a class="btn outline" href="https://falidill-portfoliowebsite.vercel.app/" target="_blank" rel="noopener">View full portfolio →</a>
         </div>
-        <p style="font-size:.82rem; margin-top:.6em; color:var(--ink-30);">Replace the link above with your portfolio URL.</p>
       </div>
       <div class="card">
         <span class="num">Background</span>
@@ -63,10 +62,39 @@
       <h2>Request support, propose a partnership, or ask a question</h2>
       <p>Tell us a bit about your organization and what kind of data help you're looking for — a quick cleanup, a dashboard, training, or something else.</p>
     </div>
-    <div class="card" style="max-width:560px;">
-      <p style="margin-bottom:1.2em;">Email: <a href="mailto:hello@dataformission.org">hello@dataformission.org</a></p>
-      <p style="margin-bottom:0; font-size:.85rem; color:var(--ink-30);">Replace this with your real contact email or a simple form embed once the domain is set up.</p>
-    </div>
+    <form class="card contact-form" style="max-width:560px;" id="contactForm">
+      <div class="field">
+        <label for="cf-name">Name</label>
+        <input type="text" id="cf-name" name="name" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="cf-org">Organization</label>
+        <input type="text" id="cf-org" name="org" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="cf-email">Email</label>
+        <input type="email" id="cf-email" name="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="cf-type">What kind of help are you looking for?</label>
+        <select id="cf-type" name="type">
+          <option>Data quality review</option>
+          <option>Dashboard development</option>
+          <option>Donor / reporting cleanup</option>
+          <option>Program outcome tracking</option>
+          <option>Staff training</option>
+          <option>Workshop request</option>
+          <option>Partnership / other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn">Send message</button>
+      <p id="cf-status" class="cf-status" role="status"></p>
+      <p style="margin-bottom:0; font-size:.82rem; color:var(--ink-30);">This opens your email app with the message pre-filled — nothing is sent until you press send there. Prefer email directly? Write to <a href="mailto:dataformission@gmail.com">dataformission@gmail.com</a>.</p>
+    </form>
   </div>
 </section>
 
@@ -83,5 +111,37 @@
   </div>
 </footer>
 
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('cf-name').value.trim();
+    var org = document.getElementById('cf-org').value.trim();
+    var email = document.getElementById('cf-email').value.trim();
+    var type = document.getElementById('cf-type').value;
+    var message = document.getElementById('cf-message').value.trim();
+
+    var to = 'dataformission@gmail.com';
+    var subject = 'Data for Mission inquiry: ' + type;
+    var bodyLines = [
+      'Name: ' + name,
+      'Organization: ' + (org || '—'),
+      'Email: ' + email,
+      'Type of help: ' + type,
+      '',
+      'Message:',
+      message
+    ];
+    var body = bodyLines.join('\n');
+
+    var mailto = 'mailto:' + encodeURIComponent(to)
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+
+    window.location.href = mailto;
+
+    var status = document.getElementById('cf-status');
+    status.textContent = 'Opening your email app with this message pre-filled…';
+  });
+</script>
 </body>
 </html>
